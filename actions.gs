@@ -59,7 +59,7 @@ function updateAction(dictSheet,keyword,wordList,operationFlag){
     dictSheet.getRange("C2").setValue('F');
     dictSheet.getRange("C3").setValue(0);
     if(operationFlag == "u"){
-        if(keyword.length > 12){
+        if(keyword.length > 17){
             return msNoUpWord;
         }        
         for(var i =0; i< wordList.length; i++){
@@ -115,19 +115,20 @@ function updateCheckAction(dictSheet,keyword,wordList){
             return checkWord+msUpMean;
         }
     }
-    dictSheet.getRange("C2").setValue('I');
     if(keyword.slice(3,6)==='-w '){
-        if(optionUpword.length > 12){
+        if(optionUpword.length > 17){
            return msNoUpWord;
         }
+        dictSheet.getRange("C2").setValue('I');
         dictSheet.getRange(i+1,1).setValue(optionUpword);
         return optionUpword+msInsertWord;
         
     }
-    if(upword.length > 12){
+    if(upword.length > 17){
         return msNoUpWord;
         
     }
+    dictSheet.getRange("C2").setValue('I');
     dictSheet.getRange(i+1,1).setValue(upword);
     return upword+msInsertWord;
     
@@ -178,10 +179,10 @@ function listAllAction(wordList){
     words += '▶︎'+wordList[wordList.length-1]+ " ";
     rowCnt = strCount(wordList[wordList.length-1].toString())+4;
     for(var i = wordList.length-2; i > 1 ;i--){
-        rowCnt += strCount(wordList[i].toString())+798;
-        if(rowCnt > 6825){
+        rowCnt += strCount(wordList[i].toString())+448;
+        if(rowCnt > 5472){
             words += String.fromCharCode(10);
-            rowCnt = strCount(wordList[i].toString()) + 798;
+            rowCnt = strCount(wordList[i].toString()) + 448;
         }
         words += '▶︎'+wordList[i] + " ";
     }
@@ -196,17 +197,17 @@ function listDefaultAction(dictSheet,wordList){
     var words = msListDefault+displayCnt+ "〜"+(displayCnt+50) +msDisplayCnt;
     var displayNumber = 1;
     words += '▶︎'+wordList[wordList.length-displayCnt-1]+ " ";
-    rowCnt = strCount(wordList[wordList.length-1].toString())+798;
+    rowCnt = strCount(wordList[wordList.length-1].toString())+448;
     for(var i = wordList.length-displayCnt-2; i > 1 ;i--){
         if(displayNumber == 50){
             dictSheet.getRange("C2").setValue('L');
             dictSheet.getRange("C3").setValue(listCnt+1);
             return words + msNextWord;
         }
-        rowCnt += strCount(wordList[i].toString())+798;
-        if(rowCnt > 6825){
+        rowCnt += strCount(wordList[i].toString())+448;
+        if(rowCnt > 5472){
             words += String.fromCharCode(10);
-            rowCnt = strCount(wordList[i].toString()) + 798;
+            rowCnt = strCount(wordList[i].toString()) + 448;
         }
         words += '▶︎'+wordList[i] + " ";
         displayNumber += 1;
@@ -227,10 +228,10 @@ function findAction(keyword,wordList){
     for(var i = 2; i < wordList.length; i++){
         checkWord = wordList[i].toString();
         if(checkWord.toLowerCase().match(findWord.toLowerCase())){
-           rowCnt+= strCount(checkWord)+798;
-           if(rowCnt > 6825){
+           rowCnt+= strCount(checkWord)+448;
+           if(rowCnt > 5472){
                 findWords += String.fromCharCode(10);
-                rowCnt = strCount(wordList[i].toString()) + 798;
+                rowCnt = strCount(wordList[i].toString()) + 448;
            }
            findCnt+=1;
            findWords+='▶︎'+ checkWord+" ";
@@ -275,8 +276,8 @@ function keywordSplit(keyword){
     return keyword;
 }
 
-/*Line一行の半角英語：25文字、半角数字21文字,全角文字13文字　最小公倍数6825
-* それぞれ、6825を25,21,13で割る
+/*Slack一行の半角英語：38文字、半角数字32文字,全角文字18文字　最小公倍数5472
+* それぞれ、5472を38,32,18で割る
 */
 function strCount(str) {
     var len = 0;
@@ -284,12 +285,12 @@ function strCount(str) {
     for (var i=0;i<str.length;i++) {
         if (str[i].match(/[a-z ]/)){
             // 半角英語
-            len+=273;
+            len+=144;
         } else if(str[i].match(/[0-9 ]/)) {
             // 半角数字
-            len+=325;
+            len+=171;
         } else{
-            len+=525;
+            len+=304;
         }   
    }
    return len;
